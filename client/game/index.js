@@ -1,5 +1,6 @@
 export default function initGame(canvasNode) {
   const ctx = canvasNode.getContext("2d");
+  let history = [];
   let drawing = [];
   canvasNode.addEventListener("mousemove", handleMouseMove);
   var isDrawing = false;
@@ -20,6 +21,8 @@ export default function initGame(canvasNode) {
 
   function handleMouseUp(event) {
     isDrawing = false;
+    history.push(drawing);
+    drawing = [];
   }
 
   const render = () => {
