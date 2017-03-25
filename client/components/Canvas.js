@@ -1,10 +1,13 @@
 import React from "react";
-import initGame from '../game';
+import initGame from "../game";
 import styled from "styled-components";
 
 export default class Canvas extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
-    console.log(this.canvasNode);
     initGame(this.canvasNode);
   }
 
@@ -17,7 +20,7 @@ export default class Canvas extends React.Component {
         height="400"
         width="600"
         style={{
-          backgroundColor: 'red',
+          backgroundColor: "red"
         }}
       />
     );

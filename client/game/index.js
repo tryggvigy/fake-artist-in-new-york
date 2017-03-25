@@ -1,16 +1,37 @@
 export default function initGame(canvasNode) {
-  const ctx = canvasNode.getContext('2d');
-  console.log(canvasNode.width, canvasNode.height)
-  var centerX = canvasNode.width / 2;
-  var centerY = canvasNode.height / 2;
-  var radius = 70;
+  const ctx = canvasNode.getContext("2d");
+  let drawing = [];
+  canvasNode.addEventListener("mousemove", handleMouseMove);
+  var isDrawing = false;
+  canvasNode.addEventListener("mousedown", handleMouseDown);
+  canvasNode.addEventListener("mouseup", handleMouseUp);
 
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-  ctx.fillStyle = 'green';
-  ctx.fill();
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = '#003300';
-  ctx.stroke();
-  ctx.closePath();
+  function handleMouseMove(event) {
+    const { left, top } = canvasNode.getBoundingClientRect();
+    if (isDrawing) {
+      drawing.push([event.clientX - left, event.clientY - top]);
+      render();
+    }
+  }
+
+  function handleMouseDown(event) {
+    isDrawing = true;
+  }
+
+  function handleMouseUp(event) {
+    isDrawing = false;
+  }
+
+  const render = () => {
+    for (let pointIndex = 1; pointIndex < drawing.length; pointIndex++) {
+      let [currX, currY] = drawing[pointIndex];
+      let [prevX, prevY] = drawing[pointIndex - 1];
+      ctx.beginPath();
+      ctx.moveTo(prevX, prevY);
+      ctx.lineTo(currX, currY);
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
+    }
+  };
 }
